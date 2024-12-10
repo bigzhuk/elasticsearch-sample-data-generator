@@ -20,7 +20,7 @@ class GenerateCommand extends Command
     private $mode;
     private $generator;
 
-    protected $signature = 'generate 
+    protected $signature = 'generate
                             {fields : Enter the fields definition (required)}
                             {--file=dumps/dump.json : Enter the file name}
                             {--entries=1 : Enter the number of entries}
@@ -33,6 +33,8 @@ class GenerateCommand extends Command
                             ';
 
     protected $description = 'Generate dump for elasticsearch bulk API upload';
+
+    protected const inputFile = 'inputFile';
 
     public function __construct(Generator $generator)
     {
@@ -70,13 +72,45 @@ class GenerateCommand extends Command
 
     private function prepareOptions(): void
     {
-        $this->fields = $this->argument('fields');
+        if ($this->argument('fields') == 'file') {
+           $this->fields = $this->getFieldsFromFile();
+        } else {
+           $this->fields = $this->argument('fields');
+        }
         $this->file = $this->getFilePath();
         $this->entries = $this->getNoOfEntries();
         $this->action = $this->getAction();
         $this->index = $this->option('index');
         $this->docStartId = $this->documentStartId();
         $this->mode = $this->option('append') ? 'a' : 'w';
+    }
+
+    private function getFieldsFromFile(): string
+    {
+        // Проверяем, существует ли файл
+        if (file_exists(GenerateCommand::inputFile)) {
+            // Инициализируем массив для хранения строк
+            $lines = [];
+
+            // Открываем файл для чтения
+            $handle = fopen(GenerateCommand::inputFile, 'r');
+            if ($handle) {
+                // Читаем файл построчно
+                while (($line = fgets($handle)) !== false) {
+                    // Убираем лишние пробелы и добавляем строку в массив
+                    $lines[] = trim($line);
+                }
+                // Закрываем файл
+                fclose($handle);
+            } else {
+                // Обработка ошибки, если файл не удалось открыть
+                $this->output->writeln("cant read inputFile");
+            }
+            return implode('|', $lines);
+        } else {
+            $this->output->writeln('inputFile not found.');
+            return '';
+        }
     }
 
     private function askForConfirmation(): bool

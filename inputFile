@@ -1,0 +1,57 @@
+offer_id:numerify('OFFER_ID-##########')
+goods_id:numberBetween(6000000, 7000000)
+card_created_at:custom('some_date')
+card_last_version_created_at:custom('some_date')
+name:word
+goods_url:url
+brand:custom('brand')
+dimension.height:randomFloat(2, 1, 10)
+dimension.length:randomFloat(2, 1, 10)
+dimension.weight:randomFloat(2, 1, 10)
+dimension.width:randomFloat(2, 1, 10)
+main_photo:url
+barcodes:ean13
+candidate_state.code:custom('candidate_state')
+candidate_state.updated_at:custom('some_date')
+item_storage_state.code:custom('item_storage_state')
+item_storage_state.updated_at:custom('some_date')
+item_storage_state.block_reason_code:word
+aggregated_state.code:custom('candidate_state')
+aggregated_state.name:word
+aggregated_state.updated_at:custom('some_date')
+aggregated_state.description:sentence
+card_state.code:custom('item_storage_state')
+card_state.name:word
+card_state.updated_at:custom('some_date')
+card_state.description:sentence
+merchant.id:numberBetween(1,3)
+merchant.name:name
+master_collection_branch.level_1_id:numberBetween(1,1)
+master_collection_branch.level_1_id:numberBetween(10,10)
+master_collection_branch.level_1_id:numberBetween(100,100)
+master_collection_branch.level_1_id:numberBetween(1000,1000)
+master_collection_branch.level_1_id:numberBetween(10000,10000)
+master_collection_branch.level_1_id:numberBetween(100001,100100)
+new_flow:boolean(50)
+has_errors:boolean(0)
+locations.id:numberBetween(1,10)
+locations.enabled:boolean(90)
+locations.address:address
+locations.service_scheme:words(3, false)
+locations.warehouse_type:custom('warehouse_type')
+locations.created_at:custom('some_date')
+locations.updated_at:custom('some_date')
+price.location_id:numberBetween(1,10)
+price.price:numberBetween(1000,2000)
+price.old_price:numberBetween(1000,2000)
+price.vat:numberBetween(20,20)
+price.version_timestamp:custom('some_date')
+price.source:custom('price_source')
+price.created:custom('some_date')
+price.updated_at:custom('some_date')
+stocks.location_id:numberBetween(1,10)
+stocks.in_stock:boolean(50)
+stocks.updated_at:custom('some_date')
+
+
+
