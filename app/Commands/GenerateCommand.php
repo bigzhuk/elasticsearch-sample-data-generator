@@ -36,6 +36,17 @@ class GenerateCommand extends Command
 
     protected const inputFile = 'inputFile';
 
+    private const toString = [
+        'goods_id' => '',
+        'merchant_id' => '',
+        'master_collection_branch.level_1_id' => '',
+        'master_collection_branch.level_2_id' => '',
+        'master_collection_branch.level_3_id' => '',
+        'master_collection_branch.level_4_id' => '',
+        'master_collection_branch.level_5_id' => '',
+        'master_collection_branch.level_6_id' => '',
+    ];
+
     public function __construct(Generator $generator)
     {
         parent::__construct();
@@ -161,6 +172,9 @@ class GenerateCommand extends Command
             foreach ($fields as $field) {
                 [$path, $method, $parameters] = $this->pathAndFieldResolver($field);
                 $value = call_user_func_array([$this->generator, $method], $parameters);
+                if (array_key_exists($path, GenerateCommand::toString)) {
+                    $value = strval($value);
+                }
                 $source = array_merge_recursive($source, $this->dotNotationToArray($path, $value));
             }
 
