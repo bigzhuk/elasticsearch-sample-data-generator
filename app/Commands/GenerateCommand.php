@@ -38,13 +38,23 @@ class GenerateCommand extends Command
 
     private const toString = [
         'goods_id' => '',
-        'merchant_id' => '',
+        'merchant.id' => '',
         'master_collection_branch.level_1_id' => '',
         'master_collection_branch.level_2_id' => '',
         'master_collection_branch.level_3_id' => '',
         'master_collection_branch.level_4_id' => '',
         'master_collection_branch.level_5_id' => '',
         'master_collection_branch.level_6_id' => '',
+    ];
+
+    private const toArray = [
+        'barcodes' => '',
+    ];
+
+    private const toArrayOfObjects = [
+        'locations' => '',
+        'price' => '',
+        'stocks' => '',
     ];
 
     public function __construct(Generator $generator)
@@ -175,13 +185,26 @@ class GenerateCommand extends Command
                 if (array_key_exists($path, GenerateCommand::toString)) {
                     $value = strval($value);
                 }
+
+                if (array_key_exists($path, GenerateCommand::toArray)) {
+                    $value = array($value);
+                }
                 $source = array_merge_recursive($source, $this->dotNotationToArray($path, $value));
             }
+
+            foreach ($source as $key => $val) {
+                if (array_key_exists($key, GenerateCommand::toArrayOfObjects)) {
+                        $source[$key] = array($val[$key]);
+                } else {
+                        $source[$key] = $val;
+                }
+            }
+            //print_r($source);
 
             $actionMetadata = [
                 $this->action => [
                     '_index' => $this->index,
-                    '_id' => $this->option('uuid') ? Uuid::getFactory()->uuid4() : $this->docStartId + ($index - 1),
+                    '_id' => $source['merchant']['id'].$source['offer_id']//$this->option('uuid') ? Uuid::getFactory()->uuid4() : $this->docStartId + ($index - 1),
                 ],
             ];
 

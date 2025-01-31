@@ -1,2 +1,4 @@
-./elasticsearch-dump generate --entries 10  "file" --quiet --force --index=card_idx_v1
+./elasticsearch-dump generate --entries 2  "file" --quiet --force --index=card_idx_v1
 ./elasticsearch-dump generate --help
+
+./elasticsearch-dump generate --entries 5000  "file" --quiet --force --index=card_idx_v1
